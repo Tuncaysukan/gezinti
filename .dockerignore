@@ -1,0 +1,9 @@
+vendor/
+.git/
+.gitignore
+mysql-data/
+.phpunit.cache/
+.env
+*.md
+composer.lock
+

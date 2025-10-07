@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mini_orm_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mini_orm
+      MYSQL_USER: orm_user
+      MYSQL_PASSWORD: orm_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mini_orm_network
+
+  php:
+    image: php:8.2-cli
+    container_name: mini_orm_php
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - mysql
+    networks:
+      - mini_orm_network
+    command: tail -f /dev/null
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: mini_orm
+      DB_USER: root
+      DB_PASSWORD: secret
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: mini_orm_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - mini_orm_network
+
+networks:
+  mini_orm_network:
+    driver: bridge
+
