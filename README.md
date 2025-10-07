@@ -15,7 +15,7 @@ Laravel Eloquent benzeri, sıfırdan geliştirilmiş PHP ORM kütüphanesi.
 ### 1. Projeyi klonlayın
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/Tuncaysukan/gezinti>
 cd mini-orm
 ```
 
